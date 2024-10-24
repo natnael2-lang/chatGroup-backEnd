@@ -10,7 +10,7 @@ const input = document.getElementsByClassName("textInput");
 
 
 const fetchTasks = () => {
-    fetch('http://localhost:3000/data')
+    fetch('/data')
         .then(response => response.json())
         .then(data => {
            
@@ -67,7 +67,7 @@ const addTaskToList = (taskId, taskText, taskDate) => {
         listContainer.removeChild(row);
         
         
-        fetch(`http://localhost:3000/data/${taskId}`, {
+        fetch(`/data/${taskId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const addList = () => {
         dateElement.value = "";
 
         
-        fetch('http://localhost:3000/data', {
+        fetch('/data', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ document.getElementById('addTaskButton').addEventListener('click', addList);
 const complated=()=>{
  
 
-fetch("http://localhost:3000/data",{
+fetch("/data",{
     method:"patch",
     headers:"aplication/json",
     body:{"complated":true}
