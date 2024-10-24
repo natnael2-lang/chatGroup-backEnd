@@ -1,15 +1,28 @@
 {
     "version": 2,
     "builds": [
-        {
-            "src": "./index.js",
-            "use": "@vercel/node"
-        }
+      {
+        "src": "./index.js",
+        "use": "@vercel/node"
+      }
     ],
     "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
-        }
-    ]
-}
+      {
+        "src": "/data",
+        "methods": ["GET", "POST"],
+        "dest": "./index.js"
+      },
+      {
+        "src": "/data/(.*)",
+        "methods": ["PATCH", "DELETE"],
+        "dest": "./index.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/public/$1"
+      }
+    ],
+    "env": {
+      "DATABASE_URL": "mongodb+srv://natnaelmessay71:O1HKUgNcrTYsXfxZ@cluster0.jkfbw.mongodb.net/ticTacDB?retryWrites=true&w=majority&appName=Cluster0" 
+    }
+  }
