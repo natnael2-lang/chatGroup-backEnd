@@ -7,7 +7,7 @@ const db = require("./Connector/db");
 const cors = require('cors');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
-const path = require('path');
+
 
 
 
@@ -19,7 +19,7 @@ db().then(() => {
     console.log('Database connected');
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
