@@ -13,6 +13,7 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const WebSocket = require('ws');
 
 
 db().then(() => {
@@ -58,6 +59,24 @@ app.use("/data", routerTodoList);
 app.use("/user", routerUser);
 
 
-app.listen(PORT, () => {
+const server =app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+const wss = new WebSocket.Server({ server });
+wss.on('connection', (ws) => {
+    console.log('New client connected');
+
+    ws.on('message', (message) => {
+        // Broadcast message to all clients
+        wss.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        });
+    });
+
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
 });

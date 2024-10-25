@@ -27,7 +27,16 @@ const getDataSome=async (req,res)=>{
 const postData = async (req, res) => {
     try {
         const newData = await Data.create(req.body);
-        console.log(newData);
+        const taskMessage = JSON.stringify({
+            type: 'newTask',
+            task: newData
+        });
+        
+        wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(taskMessage);
+            }
+        });
         res.status(201).json(newData);
     } catch (error) {
         console.error("Failed to post todo data:", error);
