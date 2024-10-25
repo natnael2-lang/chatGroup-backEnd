@@ -31,16 +31,18 @@ const postData = async (req, res) => {
             type: 'newTask',
             task: newData
         });
-        
+
+        // Broadcast the new task to all connected WebSocket clients
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(taskMessage);
             }
         });
+
         res.status(201).json(newData);
     } catch (error) {
         console.error("Failed to post todo data:", error);
-        res.status(400).json({ error: error.message }); // Send the specific error message
+        res.status(400).json({ error: error.message });
     }
 };
 const deletDataSome=async (req,res)=>{
