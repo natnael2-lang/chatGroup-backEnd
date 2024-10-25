@@ -1,5 +1,6 @@
 const Data=require("../Model/data")
 
+
 const getDataAll=async (req,res)=>{
     try{
         const data=await Data.find();
@@ -32,12 +33,16 @@ const postData = async (req, res) => {
             task: newData
         });
 
-        // Broadcast the new task to all connected WebSocket clients
-        wss.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(taskMessage);
-            }
-        });
+       
+        if (wss) {
+            wss.clients.forEach(client => {
+                if (client.readyState === WebSocket.OPEN) {
+                    client.send(taskMessage);
+                }
+            });
+        } else {
+            console.error("WebSocket server (wss) is not defined.");
+        }
 
         res.status(201).json(newData);
     } catch (error) {
@@ -45,6 +50,7 @@ const postData = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
 const deletDataSome=async (req,res)=>{
     try{
         const id=req.params.id;
